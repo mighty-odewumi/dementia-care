@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 // import { ThemeProvider } from '@/components/theme/ThemeProvider'
 import { Toaster } from '@/components/ui/toaster'
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Dementia Care",
