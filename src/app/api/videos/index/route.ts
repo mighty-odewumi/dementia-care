@@ -1,3 +1,4 @@
+// @ts-expect-error No import available now
 import { VideoIndexerClient } from '@azure/video-indexer'
 import { NextResponse } from 'next/server'
 

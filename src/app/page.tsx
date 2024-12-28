@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
 import { SignedIn, UserButton } from '@clerk/nextjs'
-import { useToast } from '@/hooks/use-toast'
 
 export default async function Home() {
   const { userId } = await auth()

@@ -9,14 +9,14 @@ import { Camera, StopCircle, Upload, X } from "lucide-react";
 export default function VideoUpload() {
   const [isRecording, setIsRecording] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [recordedBlob, setRecordedBlob] = useState(null);
+  const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [alert, setAlert] = useState({ show: false, message: '', type: 'default' });
-  const mediaRecorderRef = useRef(null);
-  const videoRef = useRef(null);
-  const streamRef = useRef(null);
-  const chunksRef = useRef([]);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
 
-  const showAlert = (message, type = 'default') => {
+  const showAlert = (message: string, type = 'default') => {
     setAlert({ show: true, message, type });
     setTimeout(() => setAlert({ show: false, message: '', type: 'default' }), 3000);
   };
@@ -29,7 +29,9 @@ export default function VideoUpload() {
       });
       
       streamRef.current = stream;
-      videoRef.current.srcObject = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
       
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
@@ -44,16 +46,20 @@ export default function VideoUpload() {
       mediaRecorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: 'video/webm' });
         setRecordedBlob(blob);
-        const tracks = streamRef.current.getTracks();
-        tracks.forEach(track => track.stop());
-        videoRef.current.srcObject = null;
+        if (streamRef.current) {
+          const tracks = streamRef.current.getTracks();
+          tracks.forEach(track => track.stop());
+        }
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
       };
 
       mediaRecorder.start();
       setIsRecording(true);
       showAlert("Recording started");
     } catch (error) {
-      showAlert(`Failed to start recording: ${error.message}`, 'error');
+      showAlert(`Failed to start recording: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     }
   }, []);
 
@@ -96,7 +102,7 @@ export default function VideoUpload() {
       showAlert("Video uploaded and processing started");
       setRecordedBlob(null);
     } catch (error) {
-      showAlert(`Failed to upload video: ${error.message}`, 'error');
+      showAlert(`Failed to upload video: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     } finally {
       setIsUploading(false);
     }
