@@ -76,7 +76,7 @@ export default function RecordPage() {
 
   return (
     <>
-      <div className="ml-16 mt-8">
+      <div className="ml-4 mt-8">
         <UserButton />
       </div>
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
