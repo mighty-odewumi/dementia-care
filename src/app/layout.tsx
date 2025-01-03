@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Dementia Care",
+  title: "MemorySafe",
   description: "Dementia Care Platform",
 };
 const inter = Inter({ subsets: ['latin'] })
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className} bg-gray-900 text-white`}>
         <header>
             
           </header>
